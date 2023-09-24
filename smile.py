@@ -56,14 +56,14 @@ def update_readme_with_meme(markdown):
         with open('README.md', 'r') as file:
             contents = file.readlines()
 
-        # Find the index of the first line that contains "![Funny Meme]"
+        # Find the index of the first line that contains "![Make me Smile]"
         index_to_replace = None
         for i, line in enumerate(contents):
-            if "![Funny Meme]" in line:
+            if "![Make me Smile]" in line:
                 index_to_replace = i
                 break
 
-        # If a line with "![Funny Meme]" was found, replace it
+        # If a line with "![Make me Smile]" was found, replace it
         if index_to_replace is not None:
             contents[index_to_replace] = markdown + "\n"
 
@@ -79,7 +79,7 @@ def main():
         meme_url = extract_meme_url(meme_data)
         if meme_url:
             # Create a Markdown image link with the meme URL
-            markdown = f"![Funny Meme]({meme_url})"
+            markdown = f"![Make me Smile]({meme_url})"
             update_readme_with_meme(markdown)
 
 if __name__ == "__main__":
