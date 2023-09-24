@@ -13,16 +13,35 @@ USER_AGENT = (
 logging.basicConfig(level=logging.INFO)
 
 def fetch_random_link(api_url, user_agent):
+    """
+    Fetch a random link from Reddit's API.
+
+    Args:
+        api_url (str): The API URL to fetch the link.
+        user_agent (str): The user agent to use in the request headers.
+
+    Returns:
+        dict: The JSON data containing the link information.
+    """
     try:
         response = requests.get(api_url, headers={'User-agent': user_agent})
-        response.raise_for_status()  # Raise an exception for HTTP errors (e.g., 404)
+        response.raise_for_status()
         return json.loads(response.text)
     except requests.exceptions.RequestException as e:
-        logging.error(f"Request error: {e}")
+        raise RuntimeError(f"Request error: {e}")
     except json.JSONDecodeError as e:
-        logging.error(f"JSON decoding error: {e}")
+        raise RuntimeError(f"JSON decoding error: {e}")
 
 def extract_link_url(post_data):
+    """
+    Extract the URL of a link from Reddit post data.
+
+    Args:
+        post_data (dict): JSON data containing post information.
+
+    Returns:
+        str: The URL of the link.
+    """
     try:
         if (
             isinstance(post_data, list)
@@ -36,11 +55,17 @@ def extract_link_url(post_data):
             link_url = post_data[0]["data"]["children"][0]["data"]["url"]
             return f"{link_url}?width=100&height=100"
         else:
-            logging.error("Unexpected JSON structure in the response.")
+            raise ValueError("Unexpected JSON structure in the response.")
     except Exception as e:
-        logging.error(f"An error occurred while extracting link URL: {e}")
+        raise RuntimeError(f"An error occurred while extracting link URL: {e}")
 
 def update_readme_with_link(markdown):
+    """
+    Update the README.md file with a link in Markdown format.
+
+    Args:
+        markdown (str): The Markdown representation of the link.
+    """
     try:
         with open('README.md', 'r') as file:
             contents = file.readlines()
@@ -53,15 +78,18 @@ def update_readme_with_link(markdown):
         with open('README.md', 'w') as file:
             file.writelines(contents)
     except Exception as e:
-        logging.error(f"An error occurred while updating README.md: {e}")
+        raise RuntimeError(f"An error occurred while updating README.md: {e}")
 
 def main():
-    post_data = fetch_random_link(REDDIT_API_URL, USER_AGENT)
-    if post_data:
-        link_url = extract_link_url(post_data)
-        if link_url:
-            markdown = f"![Illustration]({link_url})"
-            update_readme_with_link(markdown)
+    try:
+        post_data = fetch_random_link(REDDIT_API_URL, USER_AGENT)
+        if post_data:
+            link_url = extract_link_url(post_data)
+            if link_url:
+                markdown = f"![Illustration]({link_url})"
+                update_readme_with_link(markdown)
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
     main()
