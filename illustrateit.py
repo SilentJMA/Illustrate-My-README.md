@@ -46,7 +46,7 @@ def update_readme_with_link(markdown):
             contents = file.readlines()
 
         for i, line in enumerate(contents):
-            if "![Make me Smile]" in line:
+            if "![Illustration]" in line:
                 contents[i] = markdown + "\n"
                 break
 
@@ -60,7 +60,7 @@ def main():
     if post_data:
         link_url = extract_link_url(post_data)
         if link_url:
-            markdown = f"![Make me Smile]({link_url})"
+            markdown = f"![Illustration]({link_url})"
             update_readme_with_link(markdown)
 
 if __name__ == "__main__":
