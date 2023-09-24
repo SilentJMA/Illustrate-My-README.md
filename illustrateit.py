@@ -1,6 +1,7 @@
 import requests
 import json
 import logging
+import re
 
 # Constants
 REDDIT_API_URL = "https://www.reddit.com/r/Illustration/random.json?limit=1"
@@ -11,6 +12,9 @@ USER_AGENT = (
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
+
+# Define a regex pattern to match common image file extensions
+IMAGE_EXTENSIONS_PATTERN = re.compile(r'\.(jpg|jpeg|png|gif)$', re.IGNORECASE)
 
 def fetch_random_link(api_url, user_agent):
     """
@@ -34,13 +38,13 @@ def fetch_random_link(api_url, user_agent):
 
 def extract_link_url(post_data):
     """
-    Extract the URL of a link from Reddit post data.
+    Extract the URL of a picture link from Reddit post data.
 
     Args:
         post_data (dict): JSON data containing post information.
 
     Returns:
-        str: The URL of the link.
+        str: The URL of the picture link or None if not found.
     """
     try:
         if (
@@ -53,11 +57,11 @@ def extract_link_url(post_data):
             and "url" in post_data[0]["data"]["children"][0]["data"]
         ):
             link_url = post_data[0]["data"]["children"][0]["data"]["url"]
-            return f"{link_url}?width=100&height=100"
-        else:
-            raise ValueError("Unexpected JSON structure in the response.")
+            if IMAGE_EXTENSIONS_PATTERN.search(link_url):
+                return f"{link_url}?width=100&height=100"
+        raise ValueError("No picture link found in the response.")
     except Exception as e:
-        raise RuntimeError(f"An error occurred while extracting link URL: {e}")
+        raise RuntimeError(f"An error occurred while extracting picture link URL: {e}")
 
 def update_readme_with_link(markdown):
     """
