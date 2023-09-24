@@ -27,7 +27,7 @@
 #           rm screenshot.png output.txt
 #       - name: Commit and push changes
 #         run: |
-#           git config --global user.email "myemail"
+#           git config --global user.email "kilwanitro@gmail.com"
 #           git config --global user.name "SilentJMA"
 #           if [ -s "README.md" ]; then
 #             git pull origin main
