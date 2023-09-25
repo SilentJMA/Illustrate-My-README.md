@@ -14,7 +14,7 @@ USER_AGENT = (
 logging.basicConfig(level=logging.INFO)
 
 # Define a regex pattern to match common image file extensions
-IMAGE_EXTENSIONS_PATTERN = re.compile(r'\.(jpg|jpeg|png|gif)$', re.IGNORECASE)
+IMAGE_EXTENSIONS_PATTERN = re.compile(r'\.(jpg|jpeg|png)$', re.IGNORECASE)
 
 def fetch_random_link(api_url, user_agent):
     """
