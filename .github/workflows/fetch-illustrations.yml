@@ -1,5 +1,5 @@
 # Copyright (c) 2023 Mohamed Ayoub Jabane (kilwanitro@gmail.com), silentjma on GitHub
-name: Fetch Memes
+name: Fetch Illustrations
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
     - cron: '* * * * *'  
 
 jobs:
-  fetch-memes:
+  fetch-illustrations:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,7 +23,7 @@ jobs:
       - name: Install requests library
         run: pip install requests
         
-      - name: Fetch a random meme
+      - name: Fetch a random illustration
         run: python illustrateit.py
         
       - name: Commit and push changes
