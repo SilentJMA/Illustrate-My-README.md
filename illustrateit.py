@@ -1,6 +1,7 @@
 import requests
 import logging
 import re
+import json
 
 # Constants
 REDDIT_API_URL = "https://www.reddit.com/r/Illustration/random.json?limit=1"
