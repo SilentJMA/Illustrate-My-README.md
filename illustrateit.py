@@ -21,7 +21,8 @@ def fetch_random_link(api_url, user_agent):
         response.raise_for_status()
         return response.json()[0]['data']['children'][0]['data']['url']
     except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as e:
-        raise RuntimeError(f"An error occurred: {e}")
+        logging.error(f"An error occurred: {e}")
+        return None
 
 def update_readme_with_link(markdown):
     try:
@@ -36,16 +37,13 @@ def update_readme_with_link(markdown):
         with open(README_FILE, 'w') as file:
             file.writelines(contents)
     except (IOError, FileNotFoundError) as e:
-        raise RuntimeError(f"An error occurred: {e}")
+        logging.error(f"An error occurred: {e}")
 
 def main():
-    try:
-        link_url = fetch_random_link(REDDIT_API_URL, USER_AGENT)
-        if IMAGE_EXTENSIONS_PATTERN.search(link_url):
-            markdown = f"![Illustration]({link_url}?width=100&height=100)"
-            update_readme_with_link(markdown)
-    except Exception as e:
-        logging.error(f"An error occurred: {e}")
+    link_url = fetch_random_link(REDDIT_API_URL, USER_AGENT)
+    if link_url and IMAGE_EXTENSIONS_PATTERN.search(link_url):
+        markdown = f"![Illustration]({link_url}?width=100&height=100)"
+        update_readme_with_link(markdown)
 
 if __name__ == "__main__":
     main()
