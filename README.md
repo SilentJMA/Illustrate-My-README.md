@@ -1,4 +1,4 @@
-![Illustration](https://i.redd.it/qcb9sv0e36xb1.jpg?width=100&height=100)
+![Illustration](https://i.redd.it/ec2vu0u3paxb1.jpg?width=100&height=100)
 
 # Illustration
 Take a look at my script that fetches Illustrations every 5 minutes and brings a beautiful illustration to your Readme!
